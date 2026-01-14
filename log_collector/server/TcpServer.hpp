@@ -11,4 +11,4 @@ private:
     int listen_fd;
     EpollLoop loop;
     void acceptConnection();
-}
+};
