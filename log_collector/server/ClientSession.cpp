@@ -22,6 +22,11 @@ void ClientSession::onData() {
     while((pos = buffer.find('\n')) != std::string::npos) {
         std::string line = buffer.substr(0, pos);
         buffer.erase(0, pos+1);
+        
+        // auto parsed = LogParser::parse(line);
+        // if(parsed) {
+        //     queue.push(*parsed);
+        // }
         std::cout << "[LOG] " << line << std::endl;
     }
 }
