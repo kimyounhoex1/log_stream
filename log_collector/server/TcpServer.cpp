@@ -40,4 +40,14 @@ void TcpServer::acceptConnection() {
     if(client_fd < 0) return;
     auto session = std::make_shared<ClientSession>(client_fd, loop);
     session->start();
+
+    if(getpeername(client_fd, (struct sockaddr *)&addr, &len) == 0) {
+        char client_ip[INET_ADDRSTRLEN];
+        
+        inet_ntop(AF_INET, &addr.sin_addr, client_ip, INET_ADDRSTRLEN);
+        int client_port = ntohs(addr.sin_port);
+        printf("Client IP: %s, Port: %d\n", client_ip, client_port);
+    } else {
+        perror("getpeername failed");
+    }
 }
