@@ -49,7 +49,7 @@ public:
         // 큐에서 값을 꺼내고, 값 가져옴
         T val = que.front();
         que.pop();
-        std::cout << "[Queue] pop data = " << val << "\n";
+        // std::cout << "[Queue] pop data = " << val << "\n";
         return val;
     }
 };

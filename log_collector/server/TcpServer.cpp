@@ -38,7 +38,6 @@ void TcpServer::acceptConnection() {
     socklen_t len = sizeof(client);
     int client_fd = accept4(listen_fd, (sockaddr*)&client, &len, SOCK_NONBLOCK);
     if(client_fd < 0) return;
-
     auto session = std::make_shared<ClientSession>(client_fd, loop);
     session->start();
 }

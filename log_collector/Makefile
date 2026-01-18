@@ -12,6 +12,7 @@ TARGET := log_collector
 SRC := \
     main.cpp \
     core/LogParser.cpp \
+	core/DBWriter.cpp \
     server/ClientSession.cpp \
     server/EpollLoop.cpp \
     server/TcpServer.cpp

@@ -1,6 +1,10 @@
 #include "ClientSession.hpp"
+#include "../core/Pipeline.hpp"
+#include "../core/LogParser.hpp"
 #include <unistd.h>
 #include <iostream>
+
+extern Pipeline* globalPipeline;
 
 ClientSession::ClientSession(int fd, EpollLoop& loop) : fd(fd), loop(loop) {}
 
@@ -23,10 +27,10 @@ void ClientSession::onData() {
         std::string line = buffer.substr(0, pos);
         buffer.erase(0, pos+1);
         
-        // auto parsed = LogParser::parse(line);
-        // if(parsed) {
-        //     queue.push(*parsed);
-        // }
+        auto parsed = LogParser::parse(line);
+        if (parsed) {
+            globalPipeline->pushLog(*parsed);
+        }
         std::cout << "[LOG] " << line << std::endl;
     }
 }
