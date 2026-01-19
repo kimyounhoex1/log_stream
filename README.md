@@ -12,13 +12,12 @@ log_collector/
 │   │   ├── ClientSession.hpp
 │   │   ├── ClientSession.cpp
 │   │   ├── EpollLoop.hpp
-│   │   └── EpollLoop.cpp
+│   │   ├── EpollLoop.cpp
+│   │   ├── MessageQueue.hpp
+│   │   └── MessageQueue.cpp
 │   ├── utils/
 │   │   ├── Logger.hpp
 │   │   └── Logger.cpp
-│   ├── queue/
-│   │   ├── MessageQueue.hpp
-│   │   └── MessageQueue.cpp
 │   └── core/
 │       ├── LogEntry.hpp
 │       ├── LogParser.hpp
