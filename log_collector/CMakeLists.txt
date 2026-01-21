@@ -14,15 +14,15 @@ FetchContent_Declare(
   URL https://github.com/google/googletest/archive/refs/tags/v1.13.0.zip
 )
 
-# 리눅스라 사실 필요 없지만 공식 문서 그대로 둠
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
 FetchContent_MakeAvailable(googletest)
 
 # =========================
-# Main binary
+# 파일 대상 목록
 # =========================
-add_executable(log_collector
+add_executable(
+    log_collector
     main.cpp
     core/LogParser.cpp
     core/DBWriter.cpp
@@ -30,8 +30,11 @@ add_executable(log_collector
     server/EpollLoop.cpp
     server/TcpServer.cpp
 )
-
-target_include_directories(log_collector PRIVATE
+# =========================
+# 파일 대상 디렉토리
+# =========================
+target_include_directories(
+    log_collector PRIVATE
     core
     server
 )
@@ -41,20 +44,23 @@ target_include_directories(log_collector PRIVATE
 # =========================
 enable_testing()
 
-add_executable(pipeline_test
-    test/PipelineTest.cpp
-    test/FakeWriter.cpp
+add_executable(
+    log_parser_test
+    test/LogParserTest.cpp
     core/LogParser.cpp
+    core/LogEntry.hpp
 )
 
-target_include_directories(pipeline_test PRIVATE
+target_include_directories(
+    log_parser_test PRIVATE
     core
 )
 
-target_link_libraries(pipeline_test
+target_link_libraries(
+    log_parser_test
     GTest::gtest_main
     pthread
 )
 
 include(GoogleTest)
-gtest_discover_tests(pipeline_test)
+gtest_discover_tests(log_parser_test)
