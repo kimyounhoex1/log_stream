@@ -24,3 +24,8 @@ CTestTestfile.cmake
 
 # ===== OS =====
 .DS_Store
+
+# 실행 파일
+log_collector
+# 파일은 제외
+!log_collector/ 
