@@ -1,8 +1,29 @@
-# 오브젝트 파일 제외
-/**/*.o
+# ===== C / C++ =====
+*.o
+*.obj
+*.a
+*.so
+*.dylib
+*.exe
 
-#vs코드 생성시 만들어지는 파일 제외
-.vscode/*
+# ===== Build directories =====
+build/
+**/build/
+
+# ===== CMake =====
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+CTestTestfile.cmake
+
+# ===== IDE =====
+.vscode/
+.idea/
+*.swp
+
+# ===== OS =====
+.DS_Store
 
 # 실행 파일
 log_collector
