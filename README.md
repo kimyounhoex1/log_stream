@@ -62,3 +62,16 @@ log_collector/
 ├── CMakeLists.txt
 └── README.md
 `````
+
+
+### DB 테이블 명령어
+`````
+CREATE TABLE logs (
+    id SERIAL PRIMARY KEY,
+    timestamp TIMESTAMP,
+    level VARCHAR(16),
+    host VARCHAR(64),
+    pid INT,
+    message TEXT
+);
+`````
