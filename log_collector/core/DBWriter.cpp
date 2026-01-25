@@ -1,6 +1,7 @@
 #include "DBWriter.hpp"
 #include "MessageQueue.hpp"
 #include "LogEntry.hpp"
+#include <pqxx/pqxx>
 
 DBWriter::DBWriter(MessageQueue<LogEntry>& queue) :
 queue(queue), running(false) {}
@@ -24,17 +25,35 @@ void DBWriter::stop() {
 }
 
 void DBWriter::run() {
-    while(true) {
-        auto log = queue.pop();
-        if(!running && log.timestamp.empty() && log.level.empty() &&
-            log.host.empty() && log.pid == 0 && log.message.empty()) {
-            break;
+    try{
+        pqxx::connection conn(
+            "dbname=logs user=postgres password=postgres host=log_postgres port=5432"
+        );
+        std::cout << "[DBWriter] connected to PostgresSQL." << std::endl;
+
+        while(true) {
+            auto log = queue.pop();
+            try {
+                pqxx::work txn(conn);
+
+                txn.exec_params(
+                    "INSERT INTO logs (timestamp, level, host, pid, message) VALUES ($1, $2, $3, $4, $5)",
+                    log.timestamp,
+                    log.level,
+                    log.host,
+                    log.pid,
+                    log.message
+                );
+
+                txn.commit();
+                std::cout << "[DB-INSERT] ok: " << log << std::endl;
+            }
+            catch (const std::exception& e) {
+                std::cerr << "[DBWriter] Insert failed: " << e.what() << std::endl;
+            }
         }
-        std::cout << "[DB-INSERT]"
-            << log.timestamp << " | "
-            << log.level << " | "
-            << log.host << " | "
-            << log.pid << " | "
-            << log.message << std::endl;
+    }
+    catch (const std::exception& e) {
+        std::cerr << "[DBWriter] Insert failed: " << e.what() << std::endl;
     }
 }

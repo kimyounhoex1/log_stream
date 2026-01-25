@@ -64,3 +64,8 @@ target_link_libraries(
 
 include(GoogleTest)
 gtest_discover_tests(log_parser_test)
+
+link_directories(/usr/lib/aarch64-linux-gnu)
+target_link_libraries(log_collector PRIVATE pqxx pq)
+
+
