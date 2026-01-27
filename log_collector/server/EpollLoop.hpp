@@ -9,6 +9,7 @@ public:
     EpollLoop();
     void addFd(int fd, Callback cb);
     void run();
+    void removeFd(int fd);
 
 private:
     int epoll_fd;

@@ -33,6 +33,8 @@ void DBWriter::run() {
 
         while(true) {
             auto log = queue.pop();
+            if(!running) break;
+            
             try {
                 pqxx::work txn(conn);
 

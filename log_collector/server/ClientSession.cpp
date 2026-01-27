@@ -6,17 +6,24 @@
 
 extern Pipeline* globalPipeline;
 
-ClientSession::ClientSession(int fd, EpollLoop& loop) : fd(fd), loop(loop) {}
+ClientSession::ClientSession(int fd, EpollLoop& loop, std::function<void(int)> onClose)
+    : fd(fd), loop(loop), onClose(std::move(onClose)) {}
 
 void ClientSession::start() {
-    loop.addFd(fd, [this](int fd) { onData(); });
+    auto self = shared_from_this();
+    loop.addFd(fd, [self](int fd) {
+         self->onData(); 
+    });
 }
 
 void ClientSession::onData() {
     char buf[1024];
     ssize_t n = read(fd, buf, sizeof(buf));
     if(n <= 0) {
+        loop.removeFd(fd);
         close(fd);
+        if (onClose)
+            onClose(fd);
         return;
     }
 
@@ -34,4 +41,3 @@ void ClientSession::onData() {
         std::cout << "[LOG] " << line << std::endl;
     }
 }
-

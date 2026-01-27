@@ -47,6 +47,11 @@ void TcpServer::acceptConnection() {
             client_ip << ":" << client_port <<
             "fd=" << client_fd << "\n";
            
-    auto session = std::make_shared<ClientSession>(client_fd, loop);
+    auto session = std::make_shared<ClientSession>(
+        client_fd,
+        loop,
+        [this](int fd) {sessions.erase(fd);}
+    );
+    sessions[client_fd] = session;
     session->start();
 }

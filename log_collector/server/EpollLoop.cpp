@@ -25,3 +25,8 @@ void EpollLoop::run() {
         }
     }
 }
+
+void EpollLoop::removeFd(int fd) {
+    epoll_ctl(epoll_fd, EPOLL_CTL_DEL, fd, nullptr);
+    handlers.erase(fd);
+}

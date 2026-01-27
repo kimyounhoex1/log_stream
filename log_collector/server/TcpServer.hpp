@@ -1,5 +1,6 @@
 #pragma once
 #include "EpollLoop.hpp"
+#include <ClientSession.hpp>
 #include <vector>
 #include <unordered_map>
 #include <memory>
@@ -12,6 +13,5 @@ private:
     int listen_fd;
     EpollLoop loop;
     void acceptConnection();
-
-    vector<ClientSession> client_sessions;
+    std::unordered_map<int, std::shared_ptr<ClientSession>> sessions;
 };
