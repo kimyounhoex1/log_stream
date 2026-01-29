@@ -46,7 +46,7 @@ void TcpServer::acceptConnection() {
     std::cout << "Client connected: %s:%d (fd=%d)\n" <<
             client_ip << ":" << client_port <<
             "fd=" << client_fd << "\n";
-           
+         
     auto session = std::make_shared<ClientSession>(
         client_fd,
         loop,
