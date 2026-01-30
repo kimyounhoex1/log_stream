@@ -19,6 +19,18 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 # =========================
+# jsoncpp
+# =========================
+FetchContent_Declare(
+    jsoncpp
+    URL https://github.com/open-source-parsers/jsoncpp/archive/refs/tags/1.9.5.zip
+)
+
+set(JSONCPP_WITH_TESTS OFF CACHE BOOL "" FORCE)
+
+FetchContent_MakeAvailable(jsoncpp)
+
+# =========================
 # 파일 대상 목록
 # =========================
 add_executable(
@@ -37,6 +49,14 @@ target_include_directories(
     log_collector PRIVATE
     core
     server
+)
+
+target_link_libraries(
+    log_collector PRIVATE
+    GTest::gtest_main
+    jsoncpp_lib
+    pqxx
+    pq
 )
 
 # =========================
@@ -66,6 +86,5 @@ include(GoogleTest)
 gtest_discover_tests(log_parser_test)
 
 link_directories(/usr/lib/aarch64-linux-gnu)
-target_link_libraries(log_collector PRIVATE pqxx pq)
 
 
