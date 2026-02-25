@@ -1,6 +1,0 @@
-dbname=logs 
-user=postgres 
-password=postgres 
-host=log_postgres 
-port=5432
-        

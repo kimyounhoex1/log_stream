@@ -53,7 +53,6 @@ target_include_directories(
 
 target_link_libraries(
     log_collector PRIVATE
-    GTest::gtest_main
     jsoncpp_lib
     pqxx
     pq
@@ -71,20 +70,42 @@ add_executable(
     core/LogEntry.hpp
 )
 
+add_executable(
+    config_test
+    test/ConfigTest.cpp
+    client/Config.cpp
+)
+
 target_include_directories(
     log_parser_test PRIVATE
     core
 )
 
+target_include_directories(
+    config_test PRIVATE
+    client
+    core
+    server
+)
+
+ target_compile_definitions(config_test PRIVATE
+          CONFIG_JSON_PATH="${CMAKE_CURRENT_SOURCE_DIR}/test/config.json")
+
 target_link_libraries(
     log_parser_test
     GTest::gtest_main
+    jsoncpp_lib
     pthread
+)
+
+target_link_libraries(
+    config_test
+    GTest::gtest_main
+    jsoncpp_lib
 )
 
 include(GoogleTest)
 gtest_discover_tests(log_parser_test)
+gtest_discover_tests(config_test)
 
 link_directories(/usr/lib/aarch64-linux-gnu)
-
-
