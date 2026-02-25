@@ -12,7 +12,7 @@ ClientSession::ClientSession(int fd, EpollLoop& loop, std::function<void(int)> o
 void ClientSession::start() {
     auto self = shared_from_this();
     loop.addFd(fd, [self](int fd) {
-         self->onData(); 
+         self->onData();
     });
 }
 

@@ -3,10 +3,12 @@
 #include <vector>
 #include <unistd.h>
 
+// epoll fd를 생성
 EpollLoop::EpollLoop() {
     epoll_fd = epoll_create1(0);
 }
 
+// 클라이언트 fd에 콜백 함수를 등록한다.(handler를 통해)
 void EpollLoop::addFd(int fd, Callback cb) {
     epoll_event ev{};
     ev.data.fd = fd;
@@ -15,6 +17,7 @@ void EpollLoop::addFd(int fd, Callback cb) {
     handlers[fd] = std::move(cb);
 }
 
+// 클라이언트 요청이 들어오면, 
 void EpollLoop::run() {
     std::vector<epoll_event> events(64);
     while(true) {
