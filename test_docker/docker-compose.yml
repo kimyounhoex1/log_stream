@@ -11,5 +11,20 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  log_collector:
+    build:
+      context: ../log_collector # Dockerfile 위치
+    container_name: log_collector
+    depends_on:
+      - postgres
+    environment:
+      DB_HOST: postgres # 컨테이너 내부에서는 서비스 이름으로 접근
+      DB_PORT: 5432
+      DB_USER: loguser
+      DB_PASS: logpass
+      DB_NAME: logdb
+    ports:
+      - "9090:9090" # log_collector가 쓰는 포트에 맞게 수정
+
 volumes:
   pgdata:
