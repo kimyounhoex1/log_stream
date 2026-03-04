@@ -27,7 +27,7 @@ void DBWriter::stop() {
 void DBWriter::run() {
     try{
         pqxx::connection conn(
-            "dbname=logs user=postgres password=postgres host=log_postgres port=5432"
+            "dbname=logdb user=loguser password=logpass host=postgres port=5432"
         );
         std::cout << "[DBWriter] connected to PostgresSQL." << std::endl;
 
